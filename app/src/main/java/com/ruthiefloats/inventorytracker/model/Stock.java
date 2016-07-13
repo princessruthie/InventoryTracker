@@ -7,7 +7,7 @@ public class Stock {
     private String description;
     private int quantity;
     private long id;
-    private int price;
+    private double price;
     private Bitmap mBitmap;
 
     public String getName() {
@@ -42,11 +42,11 @@ public class Stock {
         this.id = id;
     }
 
-    public int getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 
@@ -56,5 +56,12 @@ public class Stock {
 
     public void setBitmap(Bitmap bitmap) {
         mBitmap = bitmap;
+    }
+
+    public Stock(String name, String description, int quantity, double price) {
+        this.name = name;
+        this.description = description;
+        this.quantity = quantity;
+        this.price = price;
     }
 }
