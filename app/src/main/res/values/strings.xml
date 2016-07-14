@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">InventoryTracker</string>
+    <string name="track_sale">Sell</string>
+    <string name="item">Item</string>
+    <string name="currency_symbol">$$$</string>
+    <string name="quantity_shortcode">###</string>
 </resources>

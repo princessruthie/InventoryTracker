@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.ruthiefloats.inventorytracker.model.Stock;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 
 public class StockAdapter extends ArrayAdapter<Stock> {
@@ -35,7 +36,8 @@ public class StockAdapter extends ArrayAdapter<Stock> {
 
 
         name.setText(currentStock.getName());
-        price.setText(String.valueOf(currentStock.getPrice()));
+        /*had to adjust this to get two decimal places */
+        price.setText(String.format(Locale.getDefault(),"%.2f",currentStock.getPrice()));
         quantity.setText(String.valueOf(currentStock.getQuantity()));
 
         return listItemView;
