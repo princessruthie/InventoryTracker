@@ -1,5 +1,6 @@
 package com.ruthiefloats.inventorytracker;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -53,7 +54,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.the_only_menu_option) {
-            Toast.makeText(this, "Item added", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(this, AddStockActivity.class);
+            startActivity(intent);
             return true;
         } else
             return super.onOptionsItemSelected(item);
