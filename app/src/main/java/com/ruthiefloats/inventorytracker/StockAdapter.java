@@ -5,7 +5,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ruthiefloats.inventorytracker.model.Stock;
 
@@ -33,6 +35,14 @@ public class StockAdapter extends ArrayAdapter<Stock> {
         // TODO: 7/13/16 for now the button doesn't change.  revisit this question
         // TODO: 7/13/16 also, if you change it, update the layout
 //        Button sellButton = (Button) listItemView.findViewById(R.id.sell_button);
+        LinearLayout linearLayout = (LinearLayout) listItemView.findViewById(R.id.clickable);
+
+        linearLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getContext(), "clicked", Toast.LENGTH_SHORT).show();
+            }
+        });
 
 
         name.setText(currentStock.getName());
