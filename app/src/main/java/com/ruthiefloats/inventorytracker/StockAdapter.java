@@ -1,6 +1,7 @@
 package com.ruthiefloats.inventorytracker;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,8 @@ import java.util.Locale;
 
 
 public class StockAdapter extends ArrayAdapter<Stock> {
+
+    public static final String PRODUCT_NAME_EXTRA = "productName";
     public StockAdapter(Context context, ArrayList<Stock> stocks){
         super(context, 0, stocks);
     }
@@ -28,7 +31,7 @@ public class StockAdapter extends ArrayAdapter<Stock> {
             listItemView = LayoutInflater.from(getContext()).inflate(
                     R.layout.list_item_layout, parent, false);
         }
-        Stock currentStock = getItem(position);
+        final Stock currentStock = getItem(position);
 
         TextView name = (TextView) listItemView.findViewById(R.id.name);
         TextView price = (TextView) listItemView.findViewById(R.id.price);
@@ -53,7 +56,9 @@ public class StockAdapter extends ArrayAdapter<Stock> {
         linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(), "open detail view", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getContext(), DetailActivity.class);
+                intent.putExtra(PRODUCT_NAME_EXTRA, currentStock.getName());
+                getContext().startActivity(intent);
             }
         });
 
