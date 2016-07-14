@@ -21,4 +21,9 @@ public class DummyData {
 
         return mStockList;
     }
+
+    public static List<Stock> constructEmptyList(){
+        List<Stock> mStockList = new ArrayList<>();
+        return mStockList;
+    }
 }
