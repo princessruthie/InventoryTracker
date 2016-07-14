@@ -1,5 +1,8 @@
 package com.ruthiefloats.inventorytracker;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -16,13 +19,13 @@ public class DetailActivity extends AppCompatActivity {
 
         TextView textView = (TextView) findViewById(R.id.detail_name);
 
-        if (savedInstanceState == null){
+        if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
-            if (extras != null){
+            if (extras != null) {
                 String productName = extras.getString(StockAdapter.PRODUCT_NAME_EXTRA);
                 textView.setText(productName);
             }
-        } else{
+        } else {
             textView.setText("yikes");
         }
 
@@ -55,7 +58,35 @@ public class DetailActivity extends AppCompatActivity {
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(DetailActivity.this, "Delete Button", Toast.LENGTH_SHORT).show();
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(DetailActivity.this);
+                builder.setMessage("Do you really want to delete this?");
+                builder.setCancelable(true);
+
+                builder.setPositiveButton(
+                        "Yes",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.cancel();
+                            }
+                        }
+                );
+
+                builder.setNegativeButton(
+                        "No",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                Intent intent = new Intent(DetailActivity.this, MainActivity.class);
+                                startActivity(intent);
+                                dialogInterface.cancel();
+                            }
+                        }
+                );
+
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
             }
         });
     }
