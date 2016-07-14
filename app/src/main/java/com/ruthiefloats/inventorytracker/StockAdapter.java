@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,39 +33,30 @@ public class StockAdapter extends ArrayAdapter<Stock> {
         TextView name = (TextView) listItemView.findViewById(R.id.name);
         TextView price = (TextView) listItemView.findViewById(R.id.price);
         TextView quantity = (TextView) listItemView.findViewById(R.id.quantity);
-        // TODO: 7/13/16 for now the button doesn't change.  revisit this question
-        // TODO: 7/13/16 also, if you change it, update the layout
-//        Button sellButton = (Button) listItemView.findViewById(R.id.sell_button);
+        Button sellButton = (Button) listItemView.findViewById(R.id.sell_button);
         LinearLayout linearLayout = (LinearLayout) listItemView.findViewById(R.id.clickable);
+
+        name.setText(currentStock.getName());
+
+        /*had to adjust this to get two decimal places */
+        price.setText(String.format(Locale.getDefault(),"%.2f",currentStock.getPrice()));
+
+        quantity.setText(String.valueOf(currentStock.getQuantity()));
+
+        sellButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getContext(), "item sold!", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(), "clicked", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "open detail view", Toast.LENGTH_SHORT).show();
             }
         });
-
-
-        name.setText(currentStock.getName());
-        /*had to adjust this to get two decimal places */
-        price.setText(String.format(Locale.getDefault(),"%.2f",currentStock.getPrice()));
-        quantity.setText(String.valueOf(currentStock.getQuantity()));
 
         return listItemView;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
