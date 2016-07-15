@@ -1,6 +1,7 @@
 package com.ruthiefloats.inventorytracker;
 
 import android.content.Intent;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -13,6 +14,8 @@ import android.widget.Toast;
 
 import com.ruthiefloats.inventorytracker.model.DummyData;
 import com.ruthiefloats.inventorytracker.model.Stock;
+import com.ruthiefloats.inventorytracker.tools.DBOpenHelper;
+import com.ruthiefloats.inventorytracker.tools.StocksDataSource;
 
 import org.w3c.dom.Text;
 
@@ -25,8 +28,17 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ArrayList<Stock> stocks = (ArrayList<Stock>) DummyData.constructList();
-//        ArrayList<Stock> stocks = (ArrayList<Stock>) DummyData.constructEmptyList();
+        StocksDataSource dataSource = new StocksDataSource(this);
+        dataSource.open();
+
+        // TODO: 7/15/16 You can already make this better
+        ArrayList<Stock> stocksNoId = (ArrayList<Stock>) DummyData.constructEmptyList();
+        for (Stock stock: stocksNoId){
+            dataSource.create(stock);
+        }
+        ArrayList<Stock> stocks = (ArrayList<Stock>) dataSource.findAll();
+
+        dataSource.close();
 
         StockAdapter adapter = new StockAdapter(this, stocks);
         ListView listView = (ListView) findViewById(R.id.list);

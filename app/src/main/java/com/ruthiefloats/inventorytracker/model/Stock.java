@@ -9,6 +9,15 @@ public class Stock {
     private long id;
     private double price;
     private Bitmap mBitmap;
+    private String image;
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
 
     public String getName() {
         return name;
@@ -64,4 +73,6 @@ public class Stock {
         this.quantity = quantity;
         this.price = price;
     }
+
+    public Stock(){}
 }
