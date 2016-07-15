@@ -80,4 +80,36 @@ public class StocksDataSource {
         Log.i(LOGTAG, "All stocks returned");
         return stocks;
     }
+
+    public void deleteRecord(Stock currentStock) {
+        open();
+        String query = "DELETE FROM " +
+                DBOpenHelper.TABLE_INVENTORY +
+                " WHERE " +
+                DBOpenHelper.COLUMN_ID +
+                " = " +
+                currentStock.getId();
+        database.execSQL(query);
+        close();
+
+    }
+
+    public void sellOne(Stock currentStock) {
+        open();
+        int newQuantity = currentStock.getQuantity()-1;
+        String query = "UPDATE " +
+                DBOpenHelper.TABLE_INVENTORY +
+                " SET " +
+                DBOpenHelper.COLUMN_QUANTITY +
+                " = " +
+                newQuantity +
+                " WHERE " +
+                DBOpenHelper.COLUMN_ID +
+                " = " +
+                currentStock.getId();
+        database.execSQL(query);
+        close();
+
+        currentStock.setQuantity(newQuantity);
+    }
 }

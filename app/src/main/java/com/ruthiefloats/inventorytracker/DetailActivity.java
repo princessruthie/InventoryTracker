@@ -11,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ruthiefloats.inventorytracker.model.Stock;
+import com.ruthiefloats.inventorytracker.tools.StocksDataSource;
 
 public class DetailActivity extends AppCompatActivity {
 
@@ -72,7 +73,12 @@ public class DetailActivity extends AppCompatActivity {
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                dialogInterface.cancel();
+                                StocksDataSource dataSource =
+                                        new StocksDataSource(DetailActivity.this);
+                                        dataSource.deleteRecord(currentStock);
+                                        Intent intent = new Intent(DetailActivity.this, MainActivity.class);
+                                        startActivity(intent);
+                                        Toast.makeText(DetailActivity.this, currentStock.getName() + " now deleted.", Toast.LENGTH_SHORT).show();
                             }
                         }
                 );
