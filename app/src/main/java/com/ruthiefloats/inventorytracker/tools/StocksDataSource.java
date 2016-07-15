@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.ruthiefloats.inventorytracker.model.Stock;
 
@@ -94,22 +95,29 @@ public class StocksDataSource {
 
     }
 
-    public void sellOne(Stock currentStock) {
-        open();
-        int newQuantity = currentStock.getQuantity()-1;
-        String query = "UPDATE " +
-                DBOpenHelper.TABLE_INVENTORY +
-                " SET " +
-                DBOpenHelper.COLUMN_QUANTITY +
-                " = " +
-                newQuantity +
-                " WHERE " +
-                DBOpenHelper.COLUMN_ID +
-                " = " +
-                currentStock.getId();
-        database.execSQL(query);
-        close();
+    public boolean sellOne(Stock currentStock) {
+        int newQuantity;
 
-        currentStock.setQuantity(newQuantity);
+        newQuantity = currentStock.getQuantity()-1;
+        if( newQuantity > -1){
+            open();
+            String query = "UPDATE " +
+                    DBOpenHelper.TABLE_INVENTORY +
+                    " SET " +
+                    DBOpenHelper.COLUMN_QUANTITY +
+                    " = " +
+                    newQuantity +
+                    " WHERE " +
+                    DBOpenHelper.COLUMN_ID +
+                    " = " +
+                    currentStock.getId();
+            database.execSQL(query);
+            close();
+
+            currentStock.setQuantity(newQuantity);
+            return true;
+        } else{
+            return false;
+        }
     }
 }

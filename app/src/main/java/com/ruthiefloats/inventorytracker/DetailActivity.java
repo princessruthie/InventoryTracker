@@ -42,7 +42,13 @@ public class DetailActivity extends AppCompatActivity {
         sellButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(DetailActivity.this, "Sell Button", Toast.LENGTH_SHORT).show();
+                StocksDataSource dataSource = new StocksDataSource(DetailActivity.this);
+                boolean successfulSale = dataSource.sellOne(currentStock);
+                if (successfulSale) {
+                    Toast.makeText(DetailActivity.this, "item sold!", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(DetailActivity.this, "Can't have negative inventory.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 

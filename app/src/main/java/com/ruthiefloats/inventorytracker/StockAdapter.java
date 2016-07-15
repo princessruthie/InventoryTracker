@@ -51,9 +51,13 @@ public class StockAdapter extends ArrayAdapter<Stock> {
             @Override
             public void onClick(View view) {
                 StocksDataSource dataSource = new StocksDataSource(getContext());
-                dataSource.sellOne(currentStock);
-                Toast.makeText(getContext(), "item sold!", Toast.LENGTH_SHORT).show();
-                notifyDataSetChanged();
+                boolean successfulSale = dataSource.sellOne(currentStock);
+                if (successfulSale) {
+                    Toast.makeText(getContext(), "item sold!", Toast.LENGTH_SHORT).show();
+                    notifyDataSetChanged();
+                } else {
+                    Toast.makeText(getContext(), "Can't have negative inventory.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
