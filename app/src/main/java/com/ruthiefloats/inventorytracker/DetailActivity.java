@@ -65,7 +65,19 @@ public class DetailActivity extends AppCompatActivity {
         orderButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(DetailActivity.this, "Order Button", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("*/*");
+                intent.putExtra(Intent.EXTRA_EMAIL, "Ruthie.Floats@gmail.com");
+                intent.putExtra(Intent.EXTRA_SUBJECT, "Purchase Request");
+                intent.putExtra(Intent.EXTRA_TEXT,
+                        "We only have " +
+                        currentStock.getQuantity() +
+                        " left in stock of the " +
+                        currentStock.getName()+
+                        ". Please send 100 more.");
+                if (intent.resolveActivity(getPackageManager()) != null) {
+                    startActivity(intent);
+                }
             }
         });
 
