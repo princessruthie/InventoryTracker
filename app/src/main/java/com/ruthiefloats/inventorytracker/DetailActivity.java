@@ -1,12 +1,14 @@
 package com.ruthiefloats.inventorytracker;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,6 +40,14 @@ public class DetailActivity extends AppCompatActivity {
         Button receiveButton = (Button) findViewById(R.id.receive_button);
         Button orderButton = (Button) findViewById(R.id.order_button);
         Button deleteButton = (Button) findViewById(R.id.delete_button);
+        ImageView imageView = (ImageView) findViewById(R.id.image);
+        Context context = this;
+        int imageResource = context.getResources().getIdentifier(
+                currentStock.getImage(), "drawable", context.getPackageName()
+        );
+        if (imageResource != 0){
+            imageView.setImageResource(imageResource);
+        }
 
         sellButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,10 +81,10 @@ public class DetailActivity extends AppCompatActivity {
                 intent.putExtra(Intent.EXTRA_SUBJECT, "Purchase Request");
                 intent.putExtra(Intent.EXTRA_TEXT,
                         "We only have " +
-                        currentStock.getQuantity() +
-                        " left in stock of the " +
-                        currentStock.getName()+
-                        ". Please send 100 more.");
+                                currentStock.getQuantity() +
+                                " left in stock of the " +
+                                currentStock.getName() +
+                                ". Please send 100 more.");
                 if (intent.resolveActivity(getPackageManager()) != null) {
                     startActivity(intent);
                 }
@@ -96,10 +106,10 @@ public class DetailActivity extends AppCompatActivity {
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 StocksDataSource dataSource =
                                         new StocksDataSource(DetailActivity.this);
-                                        dataSource.deleteRecord(currentStock);
-                                        Intent intent = new Intent(DetailActivity.this, MainActivity.class);
-                                        startActivity(intent);
-                                        Toast.makeText(DetailActivity.this, currentStock.getName() + " now deleted.", Toast.LENGTH_SHORT).show();
+                                dataSource.deleteRecord(currentStock);
+                                Intent intent = new Intent(DetailActivity.this, MainActivity.class);
+                                startActivity(intent);
+                                Toast.makeText(DetailActivity.this, currentStock.getName() + " now deleted.", Toast.LENGTH_SHORT).show();
                             }
                         }
                 );

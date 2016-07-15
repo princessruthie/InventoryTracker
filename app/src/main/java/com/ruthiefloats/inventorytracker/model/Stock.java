@@ -76,6 +76,14 @@ public class Stock implements Parcelable {
         this.price = price;
     }
 
+    public Stock(String name, String description, int quantity, double price, String image) {
+        this.name = name;
+        this.description = description;
+        this.quantity = quantity;
+        this.price = price;
+        this.image = image;
+    }
+
     public Stock(){}
 
 
