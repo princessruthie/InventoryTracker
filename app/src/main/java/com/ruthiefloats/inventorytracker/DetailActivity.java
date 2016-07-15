@@ -10,7 +10,11 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ruthiefloats.inventorytracker.model.Stock;
+
 public class DetailActivity extends AppCompatActivity {
+
+    Stock currentStock;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,8 +26,8 @@ public class DetailActivity extends AppCompatActivity {
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
             if (extras != null) {
-                String productName = extras.getString(StockAdapter.PRODUCT_NAME_EXTRA);
-                textView.setText(productName);
+                currentStock = extras.getParcelable(StockAdapter.INTENT_STOCK);
+                textView.setText(currentStock.getName());
             }
         } else {
             textView.setText("yikes");

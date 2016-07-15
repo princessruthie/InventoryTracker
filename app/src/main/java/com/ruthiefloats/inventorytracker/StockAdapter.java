@@ -19,7 +19,7 @@ import java.util.Locale;
 
 public class StockAdapter extends ArrayAdapter<Stock> {
 
-    public static final String PRODUCT_NAME_EXTRA = "productName";
+    public static final String INTENT_STOCK = "intentStock";
     public StockAdapter(Context context, ArrayList<Stock> stocks){
         super(context, 0, stocks);
     }
@@ -57,7 +57,7 @@ public class StockAdapter extends ArrayAdapter<Stock> {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getContext(), DetailActivity.class);
-                intent.putExtra(PRODUCT_NAME_EXTRA, currentStock.getName());
+                intent.putExtra(INTENT_STOCK, currentStock);
                 getContext().startActivity(intent);
             }
         });
