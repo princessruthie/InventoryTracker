@@ -55,7 +55,10 @@ public class DetailActivity extends AppCompatActivity {
         receiveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(DetailActivity.this, "Receive Button", Toast.LENGTH_SHORT).show();
+                Toast.makeText(DetailActivity.this, "One more added to inventory.", Toast.LENGTH_SHORT).show();
+                StocksDataSource dataSource = new StocksDataSource(DetailActivity.this);
+                dataSource.addInventory(currentStock);
+
             }
         });
 

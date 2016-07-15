@@ -120,4 +120,25 @@ public class StocksDataSource {
             return false;
         }
     }
+
+    public void addInventory(Stock currentStock) {
+        int newQuantity;
+
+        newQuantity = currentStock.getQuantity()+1;
+            open();
+            String query = "UPDATE " +
+                    DBOpenHelper.TABLE_INVENTORY +
+                    " SET " +
+                    DBOpenHelper.COLUMN_QUANTITY +
+                    " = " +
+                    newQuantity +
+                    " WHERE " +
+                    DBOpenHelper.COLUMN_ID +
+                    " = " +
+                    currentStock.getId();
+            database.execSQL(query);
+            close();
+
+            currentStock.setQuantity(newQuantity);
+    }
 }
