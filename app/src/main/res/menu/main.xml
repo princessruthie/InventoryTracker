@@ -5,4 +5,9 @@
         android:id="@+id/the_only_menu_option"
         android:title="@string/add_item"
         app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/menu_populate_db"
+        android:title="Add starter data"
+        app:showAsAction="never"/>
 </menu>
