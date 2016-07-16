@@ -51,7 +51,7 @@ public class StocksDataSource {
         values.put(DBOpenHelper.COLUMN_QUANTITY, stock.getQuantity());
         values.put(DBOpenHelper.COLUMN_PRODUCT_NAME, stock.getName());
         values.put(DBOpenHelper.COLUMN_PRICE, stock.getPrice());
-        values.put(DBOpenHelper.COLUMN_IMAGE, stock.getImage());
+        values.put(DBOpenHelper.COLUMN_IMAGE, stock.getImageUri());
 
         long insertid = database.insert(DBOpenHelper.TABLE_INVENTORY, null, values);
         stock.setId(insertid);
@@ -73,7 +73,7 @@ public class StocksDataSource {
                 stock.setName(cursor.getString(cursor.getColumnIndex(DBOpenHelper.COLUMN_PRODUCT_NAME)));
                 stock.setPrice(cursor.getInt(cursor.getColumnIndex(DBOpenHelper.COLUMN_PRICE)));
                 stock.setQuantity(cursor.getInt(cursor.getColumnIndex(DBOpenHelper.COLUMN_QUANTITY)));
-                stock.setImage(cursor.getString(cursor.getColumnIndex(DBOpenHelper.COLUMN_IMAGE)));
+                stock.setImageUri(cursor.getString(cursor.getColumnIndex(DBOpenHelper.COLUMN_IMAGE)));
 
                 stocks.add(stock);
             }

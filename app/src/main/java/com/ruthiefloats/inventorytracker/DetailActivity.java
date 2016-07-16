@@ -4,6 +4,9 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -14,6 +17,8 @@ import android.widget.Toast;
 
 import com.ruthiefloats.inventorytracker.model.Stock;
 import com.ruthiefloats.inventorytracker.tools.StocksDataSource;
+
+import java.io.IOException;
 
 public class DetailActivity extends AppCompatActivity {
 
@@ -42,12 +47,15 @@ public class DetailActivity extends AppCompatActivity {
         Button deleteButton = (Button) findViewById(R.id.delete_button);
         ImageView imageView = (ImageView) findViewById(R.id.image);
         Context context = this;
-        int imageResource = context.getResources().getIdentifier(
-                currentStock.getImage(), "drawable", context.getPackageName()
-        );
-        if (imageResource != 0){
-            imageView.setImageResource(imageResource);
+
+        Uri imageUri = Uri.parse(currentStock.getImageUri());
+        Bitmap bitmap = null;
+        try {
+            bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(),imageUri);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+        imageView.setImageBitmap(bitmap);
 
         sellButton.setOnClickListener(new View.OnClickListener() {
             @Override

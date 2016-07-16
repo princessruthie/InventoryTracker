@@ -11,14 +11,14 @@ public class Stock implements Parcelable {
     private long id;
     private double price;
     private Bitmap mBitmap;
-    private String image;
+    private String imageUri;
 
-    public String getImage() {
-        return image;
+    public String getImageUri() {
+        return imageUri;
     }
 
-    public void setImage(String image) {
-        this.image = image;
+    public void setImageUri(String imageUri) {
+        this.imageUri = imageUri;
     }
 
     public String getName() {
@@ -76,12 +76,12 @@ public class Stock implements Parcelable {
         this.price = price;
     }
 
-    public Stock(String name, String description, int quantity, double price, String image) {
+    public Stock(String name, String description, int quantity, double price, String imageUri) {
         this.name = name;
         this.description = description;
         this.quantity = quantity;
         this.price = price;
-        this.image = image;
+        this.imageUri = imageUri;
     }
 
     public Stock(){}
@@ -94,7 +94,7 @@ public class Stock implements Parcelable {
         id = in.readLong();
         price = in.readDouble();
         mBitmap = (Bitmap) in.readValue(Bitmap.class.getClassLoader());
-        image = in.readString();
+        imageUri = in.readString();
     }
 
     @Override
@@ -110,7 +110,7 @@ public class Stock implements Parcelable {
         dest.writeLong(id);
         dest.writeDouble(price);
         dest.writeValue(mBitmap);
-        dest.writeString(image);
+        dest.writeString(imageUri);
     }
 
     @SuppressWarnings("unused")
