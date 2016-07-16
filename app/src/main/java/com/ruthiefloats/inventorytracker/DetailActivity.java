@@ -1,14 +1,13 @@
 package com.ruthiefloats.inventorytracker;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -46,16 +45,18 @@ public class DetailActivity extends AppCompatActivity {
         Button orderButton = (Button) findViewById(R.id.order_button);
         Button deleteButton = (Button) findViewById(R.id.delete_button);
         ImageView imageView = (ImageView) findViewById(R.id.image);
-        Context context = this;
 
-        Uri imageUri = Uri.parse(currentStock.getImageUri());
-        Bitmap bitmap = null;
+        if (!currentStock.getImageUri().equals("")) {
+        }
         try {
-            bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(),imageUri);
+            Uri imageUri = Uri.parse(currentStock.getImageUri());
+            Bitmap bitmap = null;
+            bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
+            imageView.setImageBitmap(bitmap);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        imageView.setImageBitmap(bitmap);
+
 
         sellButton.setOnClickListener(new View.OnClickListener() {
             @Override

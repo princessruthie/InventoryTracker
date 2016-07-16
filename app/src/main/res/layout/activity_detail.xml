@@ -21,47 +21,46 @@
 
         <ImageView
             android:id="@+id/image"
-            tools:src="@drawable/park1"
             android:layout_width="match_parent"
+            android:layout_height="0dp"
             android:layout_weight="1"
-            android:layout_height="0dp"/>
+            tools:src="@drawable/park1"/>
 
         <TextView
-            android:gravity="center"
-            android:textSize="@dimen/app_text_large"
             android:id="@+id/detail_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:gravity="center"
+            android:textSize="@dimen/app_text_large"
             tools:text="Blue Pens"/>
 
         <Button
-            android:textSize="@dimen/app_text_large"
             android:id="@+id/sell_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Sell"/>
+            android:text="Sell"
+            android:textSize="@dimen/app_text_large"/>
 
         <Button
-            android:textSize="@dimen/app_text_large"
             android:id="@+id/receive_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Receive"/>
+            android:text="Receive"
+            android:textSize="@dimen/app_text_large"/>
 
         <Button
-            android:textSize="@dimen/app_text_large"
             android:id="@+id/order_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Order"/>
+            android:text="Order"
+            android:textSize="@dimen/app_text_large"/>
 
         <Button
-            android:textSize="@dimen/app_text_large"
             android:id="@+id/delete_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Delete"/>
-
+            android:text="Delete"
+            android:textSize="@dimen/app_text_large"/>
     </LinearLayout>
 </ScrollView>

@@ -21,14 +21,15 @@ import java.util.Locale;
 public class StockAdapter extends ArrayAdapter<Stock> {
 
     public static final String INTENT_STOCK = "intentStock";
-    public StockAdapter(Context context, ArrayList<Stock> stocks){
+
+    public StockAdapter(Context context, ArrayList<Stock> stocks) {
         super(context, 0, stocks);
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View listItemView = convertView;
-        if (listItemView == null){
+        if (listItemView == null) {
             listItemView = LayoutInflater.from(getContext()).inflate(
                     R.layout.list_item_layout, parent, false);
         }
@@ -43,7 +44,7 @@ public class StockAdapter extends ArrayAdapter<Stock> {
         name.setText(currentStock.getName());
 
         /*had to adjust this to get two decimal places */
-        price.setText(String.format(Locale.getDefault(),"%.2f",currentStock.getPrice()));
+        price.setText(String.format(Locale.getDefault(), "%.2f", currentStock.getPrice()));
 
         quantity.setText(String.valueOf(currentStock.getQuantity()));
 

@@ -40,7 +40,6 @@ public class MainActivity extends AppCompatActivity {
 
         if (adapter.getCount() == 0) {
             showTextView();
-
         } else {
             showListView(adapter);
         }

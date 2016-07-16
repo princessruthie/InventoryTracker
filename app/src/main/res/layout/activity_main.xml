@@ -14,17 +14,17 @@
 
     <TextView
         android:id="@+id/add_prompt"
-        android:textSize="48dp"
-        android:text="@string/add_prompt"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:text="@string/add_prompt"
+        android:textSize="48dp"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/secondAccent"
         android:orientation="horizontal"
-        android:paddingLeft="8dp"
-        android:background="@color/secondAccent">
+        android:paddingLeft="8dp">
 
         <TextView
             android:layout_width="0dp"
@@ -46,8 +46,8 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:gravity="center"
             android:layout_weight="1"
+            android:gravity="center"
             android:text="@string/quantity_shortcode"
             android:textSize="@dimen/app_text_size"/>
     </LinearLayout>
