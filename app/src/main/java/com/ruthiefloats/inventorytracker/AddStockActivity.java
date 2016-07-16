@@ -12,7 +12,6 @@ public class AddStockActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_stock);
-
         Button addPicButton = (Button) findViewById(R.id.add_pic_button);
         Button submitNewStockButton = (Button) findViewById(R.id.submit_button);
 
