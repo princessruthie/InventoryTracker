@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ruthiefloats.inventorytracker.model.Stock;
+import com.ruthiefloats.inventorytracker.tools.StocksDataSource;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -49,7 +50,14 @@ public class StockAdapter extends ArrayAdapter<Stock> {
         sellButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(), "item sold!", Toast.LENGTH_SHORT).show();
+                StocksDataSource dataSource = new StocksDataSource(getContext());
+                boolean successfulSale = dataSource.sellOne(currentStock);
+                if (successfulSale) {
+                    Toast.makeText(getContext(), "item sold!", Toast.LENGTH_SHORT).show();
+                    notifyDataSetChanged();
+                } else {
+                    Toast.makeText(getContext(), "Can't have negative inventory.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 

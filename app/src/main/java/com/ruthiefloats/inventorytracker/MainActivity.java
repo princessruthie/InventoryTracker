@@ -1,48 +1,60 @@
 package com.ruthiefloats.inventorytracker;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ruthiefloats.inventorytracker.model.DummyData;
 import com.ruthiefloats.inventorytracker.model.Stock;
-
-import org.w3c.dom.Text;
+import com.ruthiefloats.inventorytracker.tools.StocksDataSource;
 
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
+
+    StocksDataSource dataSource;
+    ListView listView;
+    TextView addPrompt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ArrayList<Stock> stocks = (ArrayList<Stock>) DummyData.constructList();
-//        ArrayList<Stock> stocks = (ArrayList<Stock>) DummyData.constructEmptyList();
+        dataSource = new StocksDataSource(this);
+        dataSource.open();
+
+        ArrayList<Stock> stocks = (ArrayList<Stock>) dataSource.findAll();
+
+        dataSource.close();
 
         StockAdapter adapter = new StockAdapter(this, stocks);
-        ListView listView = (ListView) findViewById(R.id.list);
-        TextView addPrompt = (TextView) findViewById(R.id.add_prompt);
+        listView = (ListView) findViewById(R.id.list);
+        addPrompt = (TextView) findViewById(R.id.add_prompt);
 
         if (adapter.getCount() == 0) {
-            // TODO: 7/14/16 remember to set visibility again when
-            // the Adapter has information
-            listView.setVisibility(View.GONE);
-            addPrompt.setVisibility(View.VISIBLE);
+            showTextView();
 
         } else {
-            addPrompt.setVisibility(View.GONE);
-            listView.setVisibility(View.VISIBLE);
-            listView.setAdapter(adapter);
+            showListView(adapter);
         }
+    }
+
+    private void showTextView() {
+        listView.setVisibility(View.GONE);
+        addPrompt.setVisibility(View.VISIBLE);
+    }
+
+    private void showListView(StockAdapter adapter) {
+        addPrompt.setVisibility(View.GONE);
+        listView.setVisibility(View.VISIBLE);
+        listView.setAdapter(adapter);
     }
 
     @Override
@@ -57,7 +69,27 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(this, AddStockActivity.class);
             startActivity(intent);
             return true;
-        } else
-            return super.onOptionsItemSelected(item);
+        } else {
+            useDummyData();
+            Toast.makeText(this, "Use dummy data", Toast.LENGTH_SHORT).show();
+            return true;
+        }
+    }
+
+    private void useDummyData() {
+        dataSource.open();
+
+        ArrayList<Stock> stocksNoId = (ArrayList<Stock>) DummyData.constructList();
+        ArrayList<Stock> stocksWithId = new ArrayList<>();
+        for (Stock stock : stocksNoId) {
+            stocksWithId.add(dataSource.create(stock));
+        }
+        ArrayList<Stock> allStocks = (ArrayList<Stock>) dataSource.findAll();
+
+        dataSource.close();
+
+        StockAdapter adapter = new StockAdapter(this, allStocks);
+        listView = (ListView) findViewById(R.id.list);
+        showListView(adapter);
     }
 }

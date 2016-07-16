@@ -1,16 +1,24 @@
 package com.ruthiefloats.inventorytracker;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ruthiefloats.inventorytracker.model.Stock;
+import com.ruthiefloats.inventorytracker.tools.StocksDataSource;
+
+import java.io.IOException;
 
 public class DetailActivity extends AppCompatActivity {
 
@@ -37,25 +45,57 @@ public class DetailActivity extends AppCompatActivity {
         Button receiveButton = (Button) findViewById(R.id.receive_button);
         Button orderButton = (Button) findViewById(R.id.order_button);
         Button deleteButton = (Button) findViewById(R.id.delete_button);
+        ImageView imageView = (ImageView) findViewById(R.id.image);
+        Context context = this;
+
+        Uri imageUri = Uri.parse(currentStock.getImageUri());
+        Bitmap bitmap = null;
+        try {
+            bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(),imageUri);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        imageView.setImageBitmap(bitmap);
 
         sellButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(DetailActivity.this, "Sell Button", Toast.LENGTH_SHORT).show();
+                StocksDataSource dataSource = new StocksDataSource(DetailActivity.this);
+                boolean successfulSale = dataSource.sellOne(currentStock);
+                if (successfulSale) {
+                    Toast.makeText(DetailActivity.this, "item sold!", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(DetailActivity.this, "Can't have negative inventory.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
         receiveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(DetailActivity.this, "Receive Button", Toast.LENGTH_SHORT).show();
+                Toast.makeText(DetailActivity.this, "One more added to inventory.", Toast.LENGTH_SHORT).show();
+                StocksDataSource dataSource = new StocksDataSource(DetailActivity.this);
+                dataSource.addInventory(currentStock);
+
             }
         });
 
         orderButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(DetailActivity.this, "Order Button", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("*/*");
+                intent.putExtra(Intent.EXTRA_EMAIL, "Ruthie.Floats@gmail.com");
+                intent.putExtra(Intent.EXTRA_SUBJECT, "Purchase Request");
+                intent.putExtra(Intent.EXTRA_TEXT,
+                        "We only have " +
+                                currentStock.getQuantity() +
+                                " left in stock of the " +
+                                currentStock.getName() +
+                                ". Please send 100 more.");
+                if (intent.resolveActivity(getPackageManager()) != null) {
+                    startActivity(intent);
+                }
             }
         });
 
@@ -72,7 +112,12 @@ public class DetailActivity extends AppCompatActivity {
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                dialogInterface.cancel();
+                                StocksDataSource dataSource =
+                                        new StocksDataSource(DetailActivity.this);
+                                dataSource.deleteRecord(currentStock);
+                                Intent intent = new Intent(DetailActivity.this, MainActivity.class);
+                                startActivity(intent);
+                                Toast.makeText(DetailActivity.this, currentStock.getName() + " now deleted.", Toast.LENGTH_SHORT).show();
                             }
                         }
                 );
