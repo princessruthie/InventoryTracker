@@ -35,26 +35,28 @@ public class StockAdapter extends ArrayAdapter<Stock> {
         }
         final Stock currentStock = getItem(position);
 
-        TextView name = (TextView) listItemView.findViewById(R.id.name);
-        TextView price = (TextView) listItemView.findViewById(R.id.price);
-        TextView quantity = (TextView) listItemView.findViewById(R.id.quantity);
-        Button sellButton = (Button) listItemView.findViewById(R.id.sell_button);
-        LinearLayout linearLayout = (LinearLayout) listItemView.findViewById(R.id.clickable);
+        ViewHolder viewHolder = new ViewHolder();
 
-        name.setText(currentStock.getName());
+        viewHolder.name = (TextView) listItemView.findViewById(R.id.name);
+        viewHolder.price = (TextView) listItemView.findViewById(R.id.price);
+        viewHolder.quantity = (TextView) listItemView.findViewById(R.id.quantity);
+        viewHolder.sellButton = (Button) listItemView.findViewById(R.id.sell_button);
+        viewHolder.linearLayout = (LinearLayout) listItemView.findViewById(R.id.clickable);
+
+        viewHolder.name.setText(currentStock.getName());
 
         /*had to adjust this to get two decimal places */
-        price.setText(String.format(Locale.getDefault(), "%.2f", currentStock.getPrice()));
+        viewHolder.price.setText(String.format(Locale.getDefault(), "%.2f", currentStock.getPrice()));
 
-        quantity.setText(String.valueOf(currentStock.getQuantity()));
+        viewHolder.quantity.setText(String.valueOf(currentStock.getQuantity()));
 
-        sellButton.setOnClickListener(new View.OnClickListener() {
+        viewHolder.sellButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 StocksDataSource dataSource = new StocksDataSource(getContext());
                 boolean successfulSale = dataSource.sellOne(currentStock);
                 if (successfulSale) {
-                    Toast.makeText(getContext(), "item sold!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Item sold!", Toast.LENGTH_SHORT).show();
                     notifyDataSetChanged();
                 } else {
                     Toast.makeText(getContext(), "Can't have negative inventory.", Toast.LENGTH_SHORT).show();
@@ -62,7 +64,7 @@ public class StockAdapter extends ArrayAdapter<Stock> {
             }
         });
 
-        linearLayout.setOnClickListener(new View.OnClickListener() {
+        viewHolder.linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getContext(), DetailActivity.class);
@@ -72,5 +74,13 @@ public class StockAdapter extends ArrayAdapter<Stock> {
         });
 
         return listItemView;
+    }
+
+    static class ViewHolder {
+        TextView name;
+        TextView price;
+        TextView quantity;
+        Button sellButton;
+        LinearLayout linearLayout;
     }
 }
