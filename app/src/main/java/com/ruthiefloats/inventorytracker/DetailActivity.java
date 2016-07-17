@@ -93,6 +93,7 @@ public class DetailActivity extends AppCompatActivity {
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+                        /*make sure after you cancel you end up in the same acty */
                         Intent intent = new Intent(DetailActivity.this, MainActivity.class);
                         startActivity(intent);
                         dialogInterface.cancel();
