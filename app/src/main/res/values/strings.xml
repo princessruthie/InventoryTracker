@@ -5,5 +5,5 @@
     <string name="currency_symbol">$$$</string>
     <string name="quantity_shortcode">###</string>
     <string name="add_item">Add Item</string>
-    <string name="add_prompt">No results! Click the above \"ADD ITEM\" button to get started.  Or select \"Add Starter Data\" from Options Menu.</string>
+    <string name="add_prompt">No results! Click the above \"ADD ITEM\" button to get started.</string>
 </resources>
