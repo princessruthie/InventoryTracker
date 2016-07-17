@@ -8,6 +8,10 @@ public class Stock implements Parcelable {
     private String name;
     private int quantity;
     private long id;
+    /*This has already caused a tiny migraine and you will
+    use BigDecimal or research something better.  Maybe a
+    actual Money class For now this works.
+     */
     private double price;
     private Bitmap mBitmap;
     private String imageUri;
