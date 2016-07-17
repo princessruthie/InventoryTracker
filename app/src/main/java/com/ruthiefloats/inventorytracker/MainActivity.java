@@ -21,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
     StocksDataSource dataSource;
     ListView listView;
     TextView addPrompt;
+    StockAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
 
         dataSource.close();
 
-        StockAdapter adapter = new StockAdapter(this, stocks);
+        adapter = new StockAdapter(this, stocks);
         listView = (ListView) findViewById(R.id.list);
         addPrompt = (TextView) findViewById(R.id.add_prompt);
 
@@ -90,5 +91,31 @@ public class MainActivity extends AppCompatActivity {
         StockAdapter adapter = new StockAdapter(this, allStocks);
         listView = (ListView) findViewById(R.id.list);
         showListView(adapter);
+    }
+
+    /*
+    if coming back into view, just rebuild it to reflect possible changes from the
+    detail activity
+     */
+    @Override
+    protected void onResume() {
+        super.onResume();
+        dataSource = new StocksDataSource(this);
+        dataSource.open();
+
+        ArrayList<Stock> stocks = (ArrayList<Stock>) dataSource.findAll();
+
+        dataSource.close();
+
+        adapter = new StockAdapter(this, stocks);
+        listView = (ListView) findViewById(R.id.list);
+        addPrompt = (TextView) findViewById(R.id.add_prompt);
+
+        if (adapter.getCount() == 0) {
+            showTextView();
+        } else {
+            showListView(adapter);
+        }
+
     }
 }
