@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,16 +35,11 @@ public class DetailActivity extends AppCompatActivity {
                 currentStock = extras.getParcelable(StockAdapter.INTENT_STOCK);
                 textView.setText(currentStock.getName());
             }
-        } else {
-            textView.setText("yikes");
         }
 
-        Button sellButton = (Button) findViewById(R.id.sell_button);
-        Button receiveButton = (Button) findViewById(R.id.receive_button);
-        Button orderButton = (Button) findViewById(R.id.order_button);
-        Button deleteButton = (Button) findViewById(R.id.delete_button);
         ImageView imageView = (ImageView) findViewById(R.id.image);
 
+        /*check that the imageUri actually isn't empty */
         if (!currentStock.getImageUri().equals("")) {
         }
         try {
@@ -56,88 +50,73 @@ public class DetailActivity extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
 
+    public void onSell(View view){
+        StocksDataSource dataSource = new StocksDataSource(DetailActivity.this);
+        boolean successfulSale = dataSource.sellOne(currentStock);
+        if (successfulSale) {
+            Toast.makeText(DetailActivity.this, "item sold!", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(DetailActivity.this, "Can't have negative inventory.", Toast.LENGTH_SHORT).show();
+        }
+    }
 
-        sellButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                StocksDataSource dataSource = new StocksDataSource(DetailActivity.this);
-                boolean successfulSale = dataSource.sellOne(currentStock);
-                if (successfulSale) {
-                    Toast.makeText(DetailActivity.this, "item sold!", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(DetailActivity.this, "Can't have negative inventory.", Toast.LENGTH_SHORT).show();
+    public void onReceive(View view){
+        Toast.makeText(DetailActivity.this, "One more added to inventory.", Toast.LENGTH_SHORT).show();
+        StocksDataSource dataSource = new StocksDataSource(DetailActivity.this);
+        dataSource.addInventory(currentStock);
+    }
+
+    public void onDelete(View view){
+        AlertDialog.Builder builder = new AlertDialog.Builder(DetailActivity.this);
+        builder.setMessage("Do you really want to delete this?");
+        builder.setCancelable(true);
+
+        builder.setPositiveButton(
+                "Yes",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        StocksDataSource dataSource =
+                                new StocksDataSource(DetailActivity.this);
+                        dataSource.deleteRecord(currentStock);
+                        Intent intent = new Intent(DetailActivity.this, MainActivity.class);
+                        startActivity(intent);
+                        Toast.makeText(DetailActivity.this, currentStock.getName() + " now deleted.", Toast.LENGTH_SHORT).show();
+                    }
                 }
-            }
-        });
+        );
 
-        receiveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(DetailActivity.this, "One more added to inventory.", Toast.LENGTH_SHORT).show();
-                StocksDataSource dataSource = new StocksDataSource(DetailActivity.this);
-                dataSource.addInventory(currentStock);
-
-            }
-        });
-
-        orderButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Intent.ACTION_SEND);
-                intent.setType("*/*");
-                intent.putExtra(Intent.EXTRA_EMAIL, "Ruthie.Floats@gmail.com");
-                intent.putExtra(Intent.EXTRA_SUBJECT, "Purchase Request");
-                intent.putExtra(Intent.EXTRA_TEXT,
-                        "We only have " +
-                                currentStock.getQuantity() +
-                                " left in stock of the " +
-                                currentStock.getName() +
-                                ". Please send 100 more.");
-                if (intent.resolveActivity(getPackageManager()) != null) {
-                    startActivity(intent);
+        builder.setNegativeButton(
+                "No",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Intent intent = new Intent(DetailActivity.this, MainActivity.class);
+                        startActivity(intent);
+                        dialogInterface.cancel();
+                    }
                 }
-            }
-        });
+        );
 
-        deleteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(DetailActivity.this);
-                builder.setMessage("Do you really want to delete this?");
-                builder.setCancelable(true);
-
-                builder.setPositiveButton(
-                        "Yes",
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                StocksDataSource dataSource =
-                                        new StocksDataSource(DetailActivity.this);
-                                dataSource.deleteRecord(currentStock);
-                                Intent intent = new Intent(DetailActivity.this, MainActivity.class);
-                                startActivity(intent);
-                                Toast.makeText(DetailActivity.this, currentStock.getName() + " now deleted.", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                );
-
-                builder.setNegativeButton(
-                        "No",
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                Intent intent = new Intent(DetailActivity.this, MainActivity.class);
-                                startActivity(intent);
-                                dialogInterface.cancel();
-                            }
-                        }
-                );
-
-                AlertDialog alertDialog = builder.create();
-                alertDialog.show();
-            }
-        });
+    public void onOrder(View view){
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("*/*");
+        intent.putExtra(Intent.EXTRA_EMAIL, "Ruthie.Floats@gmail.com");
+        intent.putExtra(Intent.EXTRA_SUBJECT, "Purchase Request");
+        intent.putExtra(Intent.EXTRA_TEXT,
+                "We only have " +
+                        currentStock.getQuantity() +
+                        " left in stock of the " +
+                        currentStock.getName() +
+                        ". Please send 100 more.");
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
+        }
     }
 }

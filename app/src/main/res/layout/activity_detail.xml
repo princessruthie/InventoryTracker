@@ -36,6 +36,7 @@
             tools:text="Blue Pens"/>
 
         <Button
+            android:onClick="onSell"
             android:id="@+id/sell_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -43,6 +44,7 @@
             android:textSize="@dimen/app_text_large"/>
 
         <Button
+            android:onClick="onReceive"
             android:id="@+id/receive_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -50,6 +52,7 @@
             android:textSize="@dimen/app_text_large"/>
 
         <Button
+            android:onClick="onOrder"
             android:id="@+id/order_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -57,6 +60,7 @@
             android:textSize="@dimen/app_text_large"/>
 
         <Button
+            android:onClick="onDelete"
             android:id="@+id/delete_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
