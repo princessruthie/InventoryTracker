@@ -10,6 +10,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ruthiefloats.inventorytracker.adapter.StockAdapter;
 import com.ruthiefloats.inventorytracker.model.DummyData;
 import com.ruthiefloats.inventorytracker.model.Stock;
 import com.ruthiefloats.inventorytracker.tools.StocksDataSource;

@@ -1,4 +1,4 @@
-package com.ruthiefloats.inventorytracker;
+package com.ruthiefloats.inventorytracker.adapter;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,6 +11,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ruthiefloats.inventorytracker.DetailActivity;
+import com.ruthiefloats.inventorytracker.R;
 import com.ruthiefloats.inventorytracker.model.Stock;
 import com.ruthiefloats.inventorytracker.tools.StocksDataSource;
 
