@@ -79,6 +79,7 @@ public class StocksDataSource {
             }
         }
         Log.i(LOGTAG, "All stocks returned");
+        cursor.close();
         return stocks;
     }
 
