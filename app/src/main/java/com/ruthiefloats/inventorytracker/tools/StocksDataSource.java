@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.ruthiefloats.inventorytracker.model.Stock;
 
@@ -29,11 +28,11 @@ public class StocksDataSource {
             DBOpenHelper.COLUMN_ID
     };
 
-    public StocksDataSource(Context context){
+    public StocksDataSource(Context context) {
         DBHelper = new DBOpenHelper(context);
     }
 
-    public void open(){
+    public void open() {
          /* getWriteableDatabase calls the onCreate
         and create the table
          */
@@ -46,7 +45,7 @@ public class StocksDataSource {
         database.close();
     }
 
-    public Stock create(Stock stock){
+    public Stock create(Stock stock) {
         ContentValues values = new ContentValues();
         values.put(DBOpenHelper.COLUMN_QUANTITY, stock.getQuantity());
         values.put(DBOpenHelper.COLUMN_PRODUCT_NAME, stock.getName());
@@ -65,8 +64,8 @@ public class StocksDataSource {
         Cursor cursor = database.query(DBOpenHelper.TABLE_INVENTORY,
                 allColumns, null, null, null, null, null);
         Log.i(LOGTAG, "Number of rows returned: " + cursor.getCount());
-        if (cursor.getCount()>0){
-            while (cursor.moveToNext()){
+        if (cursor.getCount() > 0) {
+            while (cursor.moveToNext()) {
                 Stock stock = new Stock();
                 stock.setId(cursor.getLong(cursor
                         .getColumnIndex(DBOpenHelper.COLUMN_ID)));
@@ -85,13 +84,9 @@ public class StocksDataSource {
 
     public void deleteRecord(Stock currentStock) {
         open();
-        String query = "DELETE FROM " +
-                DBOpenHelper.TABLE_INVENTORY +
-                " WHERE " +
-                DBOpenHelper.COLUMN_ID +
-                " = " +
-                currentStock.getId();
-        database.execSQL(query);
+        String whereClause = DBOpenHelper.COLUMN_ID + " = ?";
+        String[] whereArgs = new String[]{String.valueOf(currentStock.getId())};
+        database.delete(DBOpenHelper.TABLE_INVENTORY, whereClause, whereArgs);
         close();
 
     }
@@ -99,8 +94,8 @@ public class StocksDataSource {
     public boolean sellOne(Stock currentStock) {
         int newQuantity;
 
-        newQuantity = currentStock.getQuantity()-1;
-        if( newQuantity > -1){
+        newQuantity = currentStock.getQuantity() - 1;
+        if (newQuantity > -1) {
             open();
             String query = "UPDATE " +
                     DBOpenHelper.TABLE_INVENTORY +
@@ -117,7 +112,7 @@ public class StocksDataSource {
 
             currentStock.setQuantity(newQuantity);
             return true;
-        } else{
+        } else {
             return false;
         }
     }
@@ -125,21 +120,21 @@ public class StocksDataSource {
     public void addInventory(Stock currentStock) {
         int newQuantity;
 
-        newQuantity = currentStock.getQuantity()+1;
-            open();
-            String query = "UPDATE " +
-                    DBOpenHelper.TABLE_INVENTORY +
-                    " SET " +
-                    DBOpenHelper.COLUMN_QUANTITY +
-                    " = " +
-                    newQuantity +
-                    " WHERE " +
-                    DBOpenHelper.COLUMN_ID +
-                    " = " +
-                    currentStock.getId();
-            database.execSQL(query);
-            close();
+        newQuantity = currentStock.getQuantity() + 1;
+        open();
+        String query = "UPDATE " +
+                DBOpenHelper.TABLE_INVENTORY +
+                " SET " +
+                DBOpenHelper.COLUMN_QUANTITY +
+                " = " +
+                newQuantity +
+                " WHERE " +
+                DBOpenHelper.COLUMN_ID +
+                " = " +
+                currentStock.getId();
+        database.execSQL(query);
+        close();
 
-            currentStock.setQuantity(newQuantity);
+        currentStock.setQuantity(newQuantity);
     }
 }
