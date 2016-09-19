@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
         dataSource = new StocksDataSource(this);
         dataSource.open();
 
-        ArrayList<Stock> stocks = (ArrayList<Stock>) dataSource.findAll();
+        ArrayList<Stock> stocks = (ArrayList<Stock>) dataSource.getAllStocks();
 
         dataSource.close();
 
@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
         for (Stock stock : stocksNoId) {
             stocksWithId.add(dataSource.create(stock));
         }
-        ArrayList<Stock> allStocks = (ArrayList<Stock>) dataSource.findAll();
+        ArrayList<Stock> allStocks = (ArrayList<Stock>) dataSource.getAllStocks();
 
         dataSource.close();
 
@@ -104,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
         dataSource = new StocksDataSource(this);
         dataSource.open();
 
-        ArrayList<Stock> stocks = (ArrayList<Stock>) dataSource.findAll();
+        ArrayList<Stock> stocks = (ArrayList<Stock>) dataSource.getAllStocks();
 
         dataSource.close();
 

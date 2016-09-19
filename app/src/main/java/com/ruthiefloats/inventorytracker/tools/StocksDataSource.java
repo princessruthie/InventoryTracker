@@ -16,9 +16,9 @@ import java.util.List;
  * Created on 7/14/16.
  */
 public class StocksDataSource {
-    public static final String LOGTAG = "StocksDataSource: ";
-    SQLiteOpenHelper DBHelper;
-    SQLiteDatabase database;
+    public static final String LOG_TAG = "StocksDataSource: ";
+    SQLiteOpenHelper mSQLiteOpenHelper;
+    SQLiteDatabase mSQLiteDatabase;
 
     private static final String[] allColumns = {
             DBOpenHelper.COLUMN_PRODUCT_NAME,
@@ -29,20 +29,18 @@ public class StocksDataSource {
     };
 
     public StocksDataSource(Context context) {
-        DBHelper = new DBOpenHelper(context);
+        mSQLiteOpenHelper = new DBOpenHelper(context);
     }
 
     public void open() {
          /* getWriteableDatabase calls the onCreate
-        and create the table
+        and creates the table
          */
-        database = DBHelper.getWritableDatabase();
-        Log.i(LOGTAG, "Database opened");
+        mSQLiteDatabase = mSQLiteOpenHelper.getWritableDatabase();
     }
 
     public void close() {
-        Log.i(LOGTAG, "Database closed");
-        database.close();
+        mSQLiteDatabase.close();
     }
 
     public Stock create(Stock stock) {
@@ -52,18 +50,18 @@ public class StocksDataSource {
         values.put(DBOpenHelper.COLUMN_PRICE, stock.getPrice());
         values.put(DBOpenHelper.COLUMN_IMAGE, stock.getImageUri());
 
-        long insertid = database.insert(DBOpenHelper.TABLE_INVENTORY, null, values);
+        long insertid = mSQLiteDatabase.insert(DBOpenHelper.TABLE_INVENTORY, null, values);
         stock.setId(insertid);
 
         return stock;
     }
 
-    public List<Stock> findAll() {
+    public List<Stock> getAllStocks() {
         List<Stock> stocks = new ArrayList<Stock>();
 
-        Cursor cursor = database.query(DBOpenHelper.TABLE_INVENTORY,
+        Cursor cursor = mSQLiteDatabase.query(DBOpenHelper.TABLE_INVENTORY,
                 allColumns, null, null, null, null, null);
-        Log.i(LOGTAG, "Number of rows returned: " + cursor.getCount());
+        Log.i(LOG_TAG, "Number of rows returned: " + cursor.getCount());
         if (cursor.getCount() > 0) {
             while (cursor.moveToNext()) {
                 Stock stock = new Stock();
@@ -77,7 +75,7 @@ public class StocksDataSource {
                 stocks.add(stock);
             }
         }
-        Log.i(LOGTAG, "All stocks returned");
+        Log.i(LOG_TAG, "All stocks returned");
         cursor.close();
         return stocks;
     }
@@ -86,14 +84,12 @@ public class StocksDataSource {
         open();
         String whereClause = DBOpenHelper.COLUMN_ID + " = ?";
         String[] whereArgs = new String[]{String.valueOf(currentStock.getId())};
-        database.delete(DBOpenHelper.TABLE_INVENTORY, whereClause, whereArgs);
+        mSQLiteDatabase.delete(DBOpenHelper.TABLE_INVENTORY, whereClause, whereArgs);
         close();
-
     }
 
-    public boolean sellOne(Stock currentStock) {
+    public boolean decrementInventory(Stock currentStock) {
         int newQuantity;
-
         newQuantity = currentStock.getQuantity() - 1;
         if (newQuantity > -1) {
             open();
@@ -107,7 +103,7 @@ public class StocksDataSource {
                     DBOpenHelper.COLUMN_ID +
                     " = " +
                     currentStock.getId();
-            database.execSQL(query);
+            mSQLiteDatabase.execSQL(query);
             close();
 
             currentStock.setQuantity(newQuantity);
@@ -117,10 +113,8 @@ public class StocksDataSource {
         }
     }
 
-    public void addInventory(Stock currentStock) {
-        int newQuantity;
-
-        newQuantity = currentStock.getQuantity() + 1;
+    public void incrementInventory(Stock currentStock) {
+        int newQuantity = currentStock.getQuantity() + 1;
         open();
         String query = "UPDATE " +
                 DBOpenHelper.TABLE_INVENTORY +
@@ -132,9 +126,8 @@ public class StocksDataSource {
                 DBOpenHelper.COLUMN_ID +
                 " = " +
                 currentStock.getId();
-        database.execSQL(query);
+        mSQLiteDatabase.execSQL(query);
         close();
-
         currentStock.setQuantity(newQuantity);
     }
 }

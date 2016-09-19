@@ -55,7 +55,7 @@ public class DetailActivity extends AppCompatActivity {
 
     public void onSell(View view){
         StocksDataSource dataSource = new StocksDataSource(DetailActivity.this);
-        boolean successfulSale = dataSource.sellOne(currentStock);
+        boolean successfulSale = dataSource.decrementInventory(currentStock);
         if (successfulSale) {
             Toast.makeText(DetailActivity.this, "item sold!", Toast.LENGTH_SHORT).show();
         } else {
@@ -66,7 +66,7 @@ public class DetailActivity extends AppCompatActivity {
     public void onReceive(View view){
         Toast.makeText(DetailActivity.this, "One more added to inventory.", Toast.LENGTH_SHORT).show();
         StocksDataSource dataSource = new StocksDataSource(DetailActivity.this);
-        dataSource.addInventory(currentStock);
+        dataSource.incrementInventory(currentStock);
     }
 
     public void onDelete(View view){
